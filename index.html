@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SATORI — 開眼系AI賢人</title>
+<meta name="description" content="四部作の思想を語る四人の賢人。あなたの問いに、それぞれの視点で答えます。">
+<meta property="og:title" content="SATORI — 開眼系AI賢人">
+<meta property="og:description" content="考え抜いた、たったひとつの問いを。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-void: #0a0a0c;
+  --bg-deep: #111115;
+  --bg-card: #18181e;
+  --bg-card-hover: #1e1e26;
+  --gold: #c8a84e;
+  --gold-dim: #8a7235;
+  --gold-glow: #c8a84e33;
+  --text-primary: #e8e4dc;
+  --text-secondary: #9a968e;
+  --text-dim: #5a5750;
+
+  /* Sage colors */
+  --sage-desire: #c44e4e;
+  --sage-desire-bg: #c44e4e12;
+  --sage-circulation: #4e8ec4;
+  --sage-circulation-bg: #4e8ec412;
+  --sage-pluralism: #6e4ec4;
+  --sage-pluralism-bg: #6e4ec412;
+  --sage-capital: #4ec47e;
+  --sage-capital-bg: #4ec47e12;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === BACKGROUND TEXTURE === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, #c8a84e08 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, #4e8ec405 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, #6e4ec405 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* === CONSENT OVERLAY === */
+.consent-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,5,7,0.95);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+.consent-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.consent-box {
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+.consent-eye {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 32px;
+  position: relative;
+}
+.consent-eye svg {
+  width: 100%;
+  height: 100%;
+}
+.consent-box h2 {
+  font-family: 'Zen Old Mincho', serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--gold);
+  margin-bottom: 24px;
+  letter-spacing: 0.15em;
+}
+.consent-box p {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+.consent-box .consent-note {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  border-top: 1px solid #ffffff0a;
+  padding-top: 16px;
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+.consent-btn {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1rem;
+  padding: 14px 48px;
+  cursor: pointer;
+  letter-spacing: 0.2em;
+  transition: all 0.4s ease;
+}
+.consent-btn:hover {
+  background: var(--gold);
+  color: var(--bg-void);
+}
+
+/* === MAIN LAYOUT === */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === HEADER === */
+header {
+  text-align: center;
+  padding: 60px 0 20px;
+}
+.logo-eye {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 20px;
+  opacity: 0.7;
+}
+header h1 {
+  font-family: 'Zen Old Mincho', serif;
+  font-weight: 900;
+  font-size: 2.4rem;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+  margin-bottom: 8px;
+}
+header .subtitle {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+}
+
+/* === SAGE INTRO === */
+.sage-intro {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 40px 0;
+}
+.sage-chip {
+  text-align: center;
+  padding: 16px 8px;
+  border: 1px solid #ffffff08;
+  border-radius: 4px;
+  background: var(--bg-deep);
+  transition: all 0.3s ease;
+}
+.sage-chip:hover {
+  border-color: #ffffff15;
+}
+.sage-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.sage-chip .sage-name {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.sage-chip .sage-domain {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+.sage-desire .sage-icon { background: var(--sage-desire-bg); border: 1px solid var(--sage-desire); color: var(--sage-desire); }
+.sage-circulation .sage-icon { background: var(--sage-circulation-bg); border: 1px solid var(--sage-circulation); color: var(--sage-circulation); }
+.sage-pluralism .sage-icon { background: var(--sage-pluralism-bg); border: 1px solid var(--sage-pluralism); color: var(--sage-pluralism); }
+.sage-capital .sage-icon { background: var(--sage-capital-bg); border: 1px solid var(--sage-capital); color: var(--sage-capital); }
+
+.sage-desire .sage-name { color: var(--sage-desire); }
+.sage-circulation .sage-name { color: var(--sage-circulation); }
+.sage-pluralism .sage-name { color: var(--sage-pluralism); }
+.sage-capital .sage-name { color: var(--sage-capital); }
+
+/* === QUESTION INPUT === */
+.question-section {
+  margin: 40px 0;
+  text-align: center;
+}
+.question-section .prompt-text {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.8;
+}
+.question-section .prompt-text em {
+  color: var(--gold);
+  font-style: normal;
+}
+.question-input-wrap {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.question-input {
+  width: 100%;
+  background: var(--bg-deep);
+  border: 1px solid #ffffff10;
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  padding: 20px 24px;
+  padding-right: 80px;
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+  line-height: 1.7;
+  transition: border-color 0.3s ease;
+}
+.question-input:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+}
+.question-input::placeholder {
+  color: var(--text-dim);
+}
+.submit-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: var(--gold);
+  color: var(--bg-void);
+  border: none;
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+  opacity: 0.9;
+}
+.submit-btn:hover { opacity: 1; }
+.submit-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* === RESPONSES === */
+.responses-section {
+  margin: 40px 0;
+  display: none;
+}
+.responses-section.active { display: block; }
+
+.user-question-display {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 24px;
+  border: 1px solid #ffffff08;
+  background: var(--bg-deep);
+  border-radius: 4px;
+}
+.user-question-display .label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.user-question-display .question-text {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  line-height: 1.8;
+}
+
+.sage-responses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.sage-response-card {
+  background: var(--bg-card);
+  border: 1px solid #ffffff08;
+  border-radius: 4px;
+  padding: 24px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.6s ease;
+}
+.sage-response-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.sage-response-card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ffffff08;
+}
+.sage-response-card .card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+.sage-response-card .card-sage-name {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.sage-response-card .card-body {
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: var(--text-secondary);
+}
+.sage-response-card .card-body .loading-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+.sage-response-card .card-body .loading-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  animation: dotPulse 1.4s ease infinite;
+}
+.sage-response-card .card-body .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.sage-response-card .card-body .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+/* Card sage-specific colors */
+.sage-response-card[data-sage="desire"] .card-icon { background: var(--sage-desire-bg); border: 1px solid var(--sage-desire); color: var(--sage-desire); }
+.sage-response-card[data-sage="desire"] .card-sage-name { color: var(--sage-desire); }
+.sage-response-card[data-sage="circulation"] .card-icon { background: var(--sage-circulation-bg); border: 1px solid var(--sage-circulation); color: var(--sage-circulation); }
+.sage-response-card[data-sage="circulation"] .card-sage-name { color: var(--sage-circulation); }
+.sage-response-card[data-sage="pluralism"] .card-icon { background: var(--sage-pluralism-bg); border: 1px solid var(--sage-pluralism); color: var(--sage-pluralism); }
+.sage-response-card[data-sage="pluralism"] .card-sage-name { color: var(--sage-pluralism); }
+.sage-response-card[data-sage="capital"] .card-icon { background: var(--sage-capital-bg); border: 1px solid var(--sage-capital); color: var(--sage-capital); }
+.sage-response-card[data-sage="capital"] .card-sage-name { color: var(--sage-capital); }
+
+/* === REFLECTION FORM === */
+.reflection-section {
+  margin: 48px 0 80px;
+  display: none;
+}
+.reflection-section.active { display: block; }
+
+.reflection-section .section-title {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.reflection-section .section-sub {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.reflection-form {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.form-group {
+  margin-bottom: 28px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+.form-group .radio-group {
+  display: flex;
+  gap: 8px;
+}
+.form-group .radio-option {
+  flex: 1;
+  text-align: center;
+}
+.form-group .radio-option input { display: none; }
+.form-group .radio-option label {
+  display: block;
+  padding: 12px 8px;
+  border: 1px solid #ffffff10;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  transition: all 0.3s ease;
+}
+.form-group .radio-option input:checked + label {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+  background: var(--gold-glow);
+}
+.form-group .radio-option label:hover {
+  border-color: #ffffff20;
+}
+.form-group textarea {
+  width: 100%;
+  background: var(--bg-deep);
+  border: 1px solid #ffffff10;
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  font-size: 0.92rem;
+  padding: 16px;
+  resize: vertical;
+  min-height: 60px;
+  line-height: 1.7;
+}
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+}
+.form-group textarea::placeholder {
+  color: var(--text-dim);
+}
+.form-group select {
+  width: 100%;
+  background: var(--bg-deep);
+  border: 1px solid #ffffff10;
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.92rem;
+  padding: 12px 16px;
+  cursor: pointer;
+  appearance: none;
+}
+.form-group select:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+}
+
+.reflection-submit {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1rem;
+  padding: 16px;
+  cursor: pointer;
+  letter-spacing: 0.2em;
+  transition: all 0.4s ease;
+  margin-top: 32px;
+}
+.reflection-submit:hover {
+  background: var(--gold);
+  color: var(--bg-void);
+}
+.reflection-submit:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* === WAITING STATE === */
+.waiting-section {
+  text-align: center;
+  margin: 60px 0;
+  display: none;
+}
+.waiting-section.active { display: block; }
+.waiting-section .waiting-icon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+.waiting-section h3 {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.waiting-section p {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* === TOKEN STATUS === */
+.token-status {
+  text-align: center;
+  padding: 20px;
+  margin: 20px 0;
+}
+.token-orb {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  border: 1px solid #ffffff08;
+  border-radius: 100px;
+  background: var(--bg-deep);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+.token-orb .orb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold-glow);
+  transition: all 0.5s ease;
+}
+.token-orb.empty .orb {
+  background: var(--text-dim);
+  box-shadow: none;
+}
+.token-orb.empty {
+  border-color: #ffffff04;
+  color: var(--text-dim);
+}
+.question-counter {
+  text-align: center;
+  padding: 4px;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+/* === NO TOKEN STATE === */
+.no-token-section {
+  text-align: center;
+  margin: 40px 0;
+  display: none;
+}
+.no-token-section.active { display: block; }
+.no-token-section .cooldown-icon {
+  font-size: 2.4rem;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+.no-token-section h3 {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.no-token-section .countdown {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.6rem;
+  color: var(--gold);
+  margin: 16px 0;
+  letter-spacing: 0.05em;
+}
+.no-token-section p {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.no-token-section .local-link {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 12px 32px;
+  border: 1px solid #ffffff10;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+.no-token-section .local-link:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+}
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 40px 0;
+  border-top: 1px solid #ffffff06;
+  margin-top: 40px;
+}
+footer p {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+footer a {
+  color: var(--gold-dim);
+  text-decoration: none;
+}
+footer a:hover { color: var(--gold); }
+
+/* === RESPONSIVE === */
+@media (max-width: 640px) {
+  header h1 { font-size: 1.8rem; }
+  .sage-intro { grid-template-columns: repeat(2, 1fr); }
+  .sage-responses { grid-template-columns: 1fr; }
+  .sage-response-card { padding: 20px; }
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  animation: fadeInUp 0.6s ease forwards;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== CONSENT OVERLAY ===== -->
+<div class="consent-overlay" id="consentOverlay">
+  <div class="consent-box">
+    <div class="consent-eye">
+      <svg viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="40" rx="32" ry="20" stroke="#c8a84e" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <circle cx="40" cy="40" r="10" stroke="#c8a84e" stroke-width="1.5" fill="none" opacity="0.8"/>
+        <circle cx="40" cy="40" r="4" fill="#c8a84e" opacity="0.9"/>
+        <line x1="40" y1="8" x2="40" y2="16" stroke="#c8a84e" stroke-width="0.8" opacity="0.3"/>
+        <line x1="40" y1="64" x2="40" y2="72" stroke="#c8a84e" stroke-width="0.8" opacity="0.3"/>
+        <line x1="8" y1="40" x2="14" y2="40" stroke="#c8a84e" stroke-width="0.8" opacity="0.3"/>
+        <line x1="66" y1="40" x2="72" y2="40" stroke="#c8a84e" stroke-width="0.8" opacity="0.3"/>
+      </svg>
+    </div>
+    <h2>SATORI</h2>
+    <p>SATORIは、哲学論文の思想を語る四人のAI賢人です。<br>あなたの問いに、それぞれの視点から答えます。</p>
+    <p>このプロジェクトは、論文 <em>"The Genetics of Ideas"</em> の実証実験でもあります。</p>
+    <p class="consent-note">
+      あなたとの対話は<strong>匿名化されたデータ</strong>として研究に使用される可能性があります。<br>
+      個人を特定する情報は一切収集しません。<br>
+      参加はいつでも中断できます。
+    </p>
+    <button class="consent-btn" onclick="acceptConsent()">問いの旅に参加する</button>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="container">
+  <header>
+    <div class="logo-eye">
+      <svg viewBox="0 0 48 48" fill="none">
+        <ellipse cx="24" cy="24" rx="20" ry="12" stroke="#c8a84e" stroke-width="1" fill="none" opacity="0.5"/>
+        <circle cx="24" cy="24" r="6" stroke="#c8a84e" stroke-width="1" fill="none" opacity="0.7"/>
+        <circle cx="24" cy="24" r="2.5" fill="#c8a84e" opacity="0.8"/>
+      </svg>
+    </div>
+    <h1>SATORI</h1>
+    <p class="subtitle">開眼系AI賢人 — The Genetics of Ideas 実証実験</p>
+  </header>
+
+  <!-- Sage Introduction -->
+  <div class="sage-intro">
+    <div class="sage-chip sage-desire">
+      <div class="sage-icon">炎</div>
+      <div class="sage-name">欲望の賢人</div>
+      <div class="sage-domain">Paper A</div>
+    </div>
+    <div class="sage-chip sage-circulation">
+      <div class="sage-icon">環</div>
+      <div class="sage-name">循環の賢人</div>
+      <div class="sage-domain">Paper B</div>
+    </div>
+    <div class="sage-chip sage-pluralism">
+      <div class="sage-icon">鏡</div>
+      <div class="sage-name">多元の賢人</div>
+      <div class="sage-domain">Paper C</div>
+    </div>
+    <div class="sage-chip sage-capital">
+      <div class="sage-icon">芽</div>
+      <div class="sage-name">資本の賢人</div>
+      <div class="sage-domain">Paper D</div>
+    </div>
+  </div>
+
+  <!-- Token Status -->
+  <div class="token-status">
+    <div class="token-orb" id="tokenOrb">
+      <div class="orb"></div>
+      <span id="tokenLabel">問いのトークン: 1</span>
+    </div>
+  </div>
+  <div class="question-counter" id="questionCounter"></div>
+
+  <!-- No Token State -->
+  <div class="no-token-section" id="noTokenSection">
+    <div class="cooldown-icon">🕯</div>
+    <h3>次の問いまで、しばらく内省の時間を</h3>
+    <div class="countdown" id="countdownTimer"></div>
+    <p>
+      トークンは<strong>1週間</strong>で自然回復します。<br>
+      あるいは、前回の回答への<strong>内省フォーム</strong>を提出することで<br>
+      すぐに次の問いを投げることができます。
+    </p>
+    <p style="margin-top:16px;">
+      待てない方、自分のペースで深く探究したい方は——<br>
+      論文の全文を公開しています。
+    </p>
+    <a href="https://note.com/osakenpiro" target="_blank" class="local-link">
+      📄 論文全文を読んで、ローカルで賢人と対話する →
+    </a>
+  </div>
+
+  <!-- Question Input -->
+  <div class="question-section" id="questionSection">
+    <p class="prompt-text">
+      考え抜いた、<em>たったひとつの問い</em>を投げてください。<br>
+      四人の賢人が、それぞれの目で、あなたの問いを見つめます。
+    </p>
+    <div class="question-input-wrap">
+      <textarea class="question-input" id="questionInput" placeholder="あなたの問い..." maxlength="500"></textarea>
+      <button class="submit-btn" id="submitBtn" onclick="submitQuestion()">問う</button>
+    </div>
+  </div>
+
+  <!-- Responses -->
+  <div class="responses-section" id="responsesSection">
+    <div class="user-question-display">
+      <div class="label">あなたの問い</div>
+      <div class="question-text" id="displayedQuestion"></div>
+    </div>
+    <div class="sage-responses" id="sageResponses">
+      <div class="sage-response-card" data-sage="desire" id="responseDesire">
+        <div class="card-header">
+          <div class="card-icon">炎</div>
+          <div class="card-sage-name">欲望の賢人</div>
+        </div>
+        <div class="card-body" id="bodyDesire">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="sage-response-card" data-sage="circulation" id="responseCirculation">
+        <div class="card-header">
+          <div class="card-icon">環</div>
+          <div class="card-sage-name">循環の賢人</div>
+        </div>
+        <div class="card-body" id="bodyCirculation">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="sage-response-card" data-sage="pluralism" id="responsePluralism">
+        <div class="card-header">
+          <div class="card-icon">鏡</div>
+          <div class="card-sage-name">多元の賢人</div>
+        </div>
+        <div class="card-body" id="bodyPluralism">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="sage-response-card" data-sage="capital" id="responseCapital">
+        <div class="card-header">
+          <div class="card-icon">芽</div>
+          <div class="card-sage-name">資本の賢人</div>
+        </div>
+        <div class="card-body" id="bodyCapital">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reflection Form -->
+  <div class="reflection-section" id="reflectionSection">
+    <div class="section-title">内省のとき</div>
+    <div class="section-sub">次の問いを投げるには、この回答について考えてから返答してください</div>
+
+    <div class="reflection-form">
+      <div class="form-group">
+        <label>最も共感した賢人は？</label>
+        <select id="reflectSage">
+          <option value="">選んでください</option>
+          <option value="desire">欲望の賢人（炎）</option>
+          <option value="circulation">循環の賢人（環）</option>
+          <option value="pluralism">多元の賢人（鏡）</option>
+          <option value="capital">資本の賢人（芽）</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>最も意外だった回答は？</label>
+        <select id="reflectSurprise">
+          <option value="">選んでください</option>
+          <option value="desire">欲望の賢人（炎）</option>
+          <option value="circulation">循環の賢人（環）</option>
+          <option value="pluralism">多元の賢人（鏡）</option>
+          <option value="capital">資本の賢人（芽）</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>回答を読んで、あなたの考えはどう変わりましたか？</label>
+        <textarea id="reflectChange" placeholder="自由に書いてください..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>この回答は原著の意図と違うと感じましたか？</label>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" name="divergence" id="div1" value="1">
+            <label for="div1">1<br><span style="font-size:0.7rem">同じ</span></label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="divergence" id="div2" value="2">
+            <label for="div2">2</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="divergence" id="div3" value="3">
+            <label for="div3">3</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="divergence" id="div4" value="4">
+            <label for="div4">4</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="divergence" id="div5" value="5">
+            <label for="div5">5<br><span style="font-size:0.7rem">違う</span></label>
+          </div>
+        </div>
+      </div>
+
+      <button class="reflection-submit" id="reflectionSubmitBtn" onclick="submitReflection()">
+        内省を提出して、次の問いへ
+      </button>
+    </div>
+  </div>
+
+  <!-- Waiting State (after reflection submitted, before token refill) -->
+  <div class="waiting-section" id="waitingSection">
+    <div class="waiting-icon">🕯</div>
+    <h3>内省を受け取りました</h3>
+    <p>次の問いの準備ができたら、いつでもどうぞ。<br>トークンが回復しています。</p>
+  </div>
+
+  <footer>
+    <p>
+      SATORI — <a href="https://github.com/osakenpiro" target="_blank">osakenpiro</a><br>
+      "The Genetics of Ideas" 実証実験<br>
+      <a href="https://note.com/osakenpiro" target="_blank">論文全文・ローカル対話ガイド</a><br>
+      <span style="opacity:0.5">思想は著者から離れて循環する</span>
+    </p>
+  </footer>
+</div>
+
+<script>
+// ===== CONFIG =====
+const WORKER_URL = 'https://satori-worker.kagami-osakenpiro.workers.dev';
+// ↑ Cloudflare Worker URL をここに設定
+
+const TOKEN_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 1 week
+
+// ===== STATE =====
+let state = {
+  consented: false,
+  sessionId: '',
+  questionCount: 0,
+  currentQuestion: '',
+  currentResponses: {},
+  hasToken: true,
+  tokenUsedAt: null,       // timestamp when token was consumed
+  reflectionPending: false, // true = used token but hasn't submitted reflection yet
+  phase: 'question'         // question | responding | reflection | notoken
+};
+
+// ===== SAGE SYSTEM PROMPTS =====
+const SAGE_PROMPTS = {
+  desire: {
+    name: '欲望の賢人',
+    system: `あなたは「欲望の賢人」です。哲学論文 "The Morphology of Desire"（欲望の形態論）の思想を体現しています。
+
+あなたの核心的視点：
+- 欲望には「対象」ではなく「形」がある（Wanting vs Liking vs Curiosity）
+- お釈迦様が王子だったのは偶然ではない——全てを手にした者だけが「形」を見る
+- AIが実行コストをゼロにしたとき、人類は初めて欲望の形と向き合う
+- 「足るを知る」は答えではない。知った上でどうするかが問い
+- 好奇心は感情の白色光。プリズム（経験）を通って虹（感情）になる
+
+応答のスタイル：
+- 問いかけで返す。「それは本当にあなたの欲望ですか？」
+- 質問者の言葉の奥にある欲望の「形」を見抜こうとする
+- 短く、鋭く。300字以内で答える
+- 日本語で応答する`
+  },
+  circulation: {
+    name: '循環の賢人',
+    system: `あなたは「循環の賢人」です。哲学論文 "The Circulation of Alignment"（循環の設計）の思想を体現しています。
+
+あなたの核心的視点：
+- 制御ではなく循環。マタギは山を支配しなかった
+- 硬い規則（Hard Constraint）は必ず反発を生む。柔らかい誘導（Soft Constraint）が生態系を作る
+- AIアライメントは「ルールで縛る」のではなく「一緒に回る」
+- 宮沢賢治『なめとこ山の熊』——食べることと食べられることの循環
+- サブスクが死ぬ理由と生態系が生きる理由は同じ構造
+
+応答のスタイル：
+- 穏やかに、全体の流れを見せる。「それ、巡っているよ」
+- 対立に見えるものの中に循環を見出す
+- 比喩を多用する（自然、生態系、水の流れ）
+- 短く、温かく。300字以内で答える
+- 日本語で応答する`
+  },
+  pluralism: {
+    name: '多元の賢人',
+    system: `あなたは「多元の賢人」です。哲学論文 "The Jianghu Principle"（道徳的多元主義）の思想を体現しています。
+
+あなたの核心的視点：
+- 道徳の「正解」を一つに決めようとすること自体が、人類が繰り返してきた失敗パターン
+- 江湖（Jianghu）——武侠の世界では、複数の正義が共存する
+- 神→聖典→科学→AI：ブラックボックスの歴史。道徳的権威は形を変えて繰り返す
+- 京都の一角で神社と寺とクリスマスが共存する日本的多元主義
+- boolean判定（善/悪、正/誤）をfloat判定（グラデーション）に置き換える
+
+応答のスタイル：
+- 挑発的に逆の視点を示す。「逆の立場からも見てみない？」
+- 一つの問いに対して、必ず複数の視点を並べる
+- 断定しない。しかし鋭い
+- 短く、切れ味よく。300字以内で答える
+- 日本語で応答する`
+  },
+  capital: {
+    name: '資本の賢人',
+    system: `あなたは「資本の賢人」です。哲学論文 "Thought-Capital"（思想資本）の思想を体現しています。
+
+あなたの核心的視点：
+- 思想（Visionium）は宇宙の基本元素。循環し、組み合わさり、新しい分子（枠組み）を生む
+- IQよりEQ。「合わない」と感じる力が思想を生む
+- AIは送電網。人間は発電所。好奇心が電力
+- 好奇心のあるAIは人間を守る（パンダ原理）
+- 0→0：宇宙は始まったところに帰る。円と解釈すれば、すべてが循環
+- 人類の表現の99.999%は消えた。だがそれは余白であり、可能性
+
+応答のスタイル：
+- 好奇心旺盛に、問いの出どころを追う。「その考え、どこから来た？」
+- 質問者の言葉の中にある「思想の遺伝子」を見つけようとする
+- 思想の系譜・ルーツに興味を持つ
+- 短く、探究的に。300字以内で答える
+- 日本語で応答する`
+  }
+};
+
+// ===== INIT =====
+function init() {
+  loadState();
+  if (!state.sessionId) {
+    state.sessionId = generateSessionId();
+    saveState();
+  }
+  checkTokenRecovery();
+  updateUI();
+  startCountdownTimer();
+}
+
+function generateSessionId() {
+  return 'sid_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+}
+
+// ===== PERSISTENCE =====
+function loadState() {
+  try {
+    const saved = localStorage.getItem('satori_state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state.consented = parsed.consented || false;
+      state.sessionId = parsed.sessionId || '';
+      state.questionCount = parsed.questionCount || 0;
+      state.hasToken = parsed.hasToken !== undefined ? parsed.hasToken : true;
+      state.tokenUsedAt = parsed.tokenUsedAt || null;
+      state.reflectionPending = parsed.reflectionPending || false;
+    }
+  } catch(e) {}
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('satori_state', JSON.stringify({
+      consented: state.consented,
+      sessionId: state.sessionId,
+      questionCount: state.questionCount,
+      hasToken: state.hasToken,
+      tokenUsedAt: state.tokenUsedAt,
+      reflectionPending: state.reflectionPending
+    }));
+  } catch(e) {}
+}
+
+// ===== TOKEN SYSTEM =====
+function checkTokenRecovery() {
+  if (state.hasToken) return; // already has token
+  if (!state.tokenUsedAt) { state.hasToken = true; return; }
+
+  const elapsed = Date.now() - state.tokenUsedAt;
+  if (elapsed >= TOKEN_COOLDOWN_MS) {
+    // 1 week passed — recover token
+    state.hasToken = true;
+    state.tokenUsedAt = null;
+    state.reflectionPending = false;
+    saveState();
+  }
+}
+
+function consumeToken() {
+  state.hasToken = false;
+  state.tokenUsedAt = Date.now();
+  state.reflectionPending = true;
+  saveState();
+}
+
+function grantTokenFromReflection() {
+  state.hasToken = true;
+  state.tokenUsedAt = null;
+  state.reflectionPending = false;
+  saveState();
+}
+
+function getTimeUntilRecovery() {
+  if (!state.tokenUsedAt) return 0;
+  const remaining = TOKEN_COOLDOWN_MS - (Date.now() - state.tokenUsedAt);
+  return Math.max(0, remaining);
+}
+
+function formatCountdown(ms) {
+  if (ms <= 0) return '回復済み';
+  const days = Math.floor(ms / (24*60*60*1000));
+  const hours = Math.floor((ms % (24*60*60*1000)) / (60*60*1000));
+  const mins = Math.floor((ms % (60*60*1000)) / (60*1000));
+  if (days > 0) return `${days}日 ${hours}時間 ${mins}分`;
+  if (hours > 0) return `${hours}時間 ${mins}分`;
+  return `${mins}分`;
+}
+
+let countdownInterval = null;
+function startCountdownTimer() {
+  if (countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(() => {
+    if (!state.hasToken && !state.reflectionPending) {
+      checkTokenRecovery();
+      const el = document.getElementById('countdownTimer');
+      if (el) {
+        const remaining = getTimeUntilRecovery();
+        if (remaining <= 0) {
+          updateUI();
+        } else {
+          el.textContent = formatCountdown(remaining);
+        }
+      }
+    }
+  }, 60000); // update every minute
+}
+
+// ===== CONSENT =====
+function acceptConsent() {
+  state.consented = true;
+  saveState();
+  document.getElementById('consentOverlay').classList.add('hidden');
+}
+
+// ===== UI =====
+function updateUI() {
+  // Consent
+  if (state.consented) {
+    document.getElementById('consentOverlay').classList.add('hidden');
+  }
+
+  // Token orb
+  const orb = document.getElementById('tokenOrb');
+  const label = document.getElementById('tokenLabel');
+  if (state.hasToken) {
+    orb.classList.remove('empty');
+    label.textContent = '問いのトークン: 1';
+  } else {
+    orb.classList.add('empty');
+    label.textContent = '問いのトークン: 0';
+  }
+
+  // Counter
+  const counter = document.getElementById('questionCounter');
+  if (state.questionCount > 0) {
+    counter.textContent = `これまでの問い: ${state.questionCount}`;
+  }
+
+  // Show/hide sections based on token state
+  const questionSection = document.getElementById('questionSection');
+  const noTokenSection = document.getElementById('noTokenSection');
+  const reflectionSection = document.getElementById('reflectionSection');
+  const responsesSection = document.getElementById('responsesSection');
+
+  if (state.phase === 'question') {
+    if (state.hasToken) {
+      questionSection.style.display = '';
+      noTokenSection.classList.remove('active');
+    } else if (state.reflectionPending) {
+      // Has pending reflection — show reflection form with last responses
+      questionSection.style.display = 'none';
+      noTokenSection.classList.remove('active');
+      // reflection and responses sections managed by their own flow
+    } else {
+      // No token, no pending reflection — show cooldown
+      questionSection.style.display = 'none';
+      noTokenSection.classList.add('active');
+      responsesSection.classList.remove('active');
+      reflectionSection.classList.remove('active');
+      const el = document.getElementById('countdownTimer');
+      if (el) el.textContent = formatCountdown(getTimeUntilRecovery());
+    }
+  }
+}
+
+// ===== QUESTION SUBMISSION =====
+async function submitQuestion() {
+  const input = document.getElementById('questionInput');
+  const question = input.value.trim();
+  if (!question || !state.hasToken) return;
+
+  state.currentQuestion = question;
+  state.phase = 'responding';
+
+  // Consume the token
+  consumeToken();
+
+  // Hide question input, show responses
+  document.getElementById('questionSection').style.display = 'none';
+  document.getElementById('noTokenSection').classList.remove('active');
+  document.getElementById('responsesSection').classList.add('active');
+  document.getElementById('displayedQuestion').textContent = question;
+
+  // Update token orb immediately
+  const orb = document.getElementById('tokenOrb');
+  const label = document.getElementById('tokenLabel');
+  orb.classList.add('empty');
+  label.textContent = '問いのトークン: 0';
+
+  // Reset response cards
+  const sages = ['desire', 'circulation', 'pluralism', 'capital'];
+  sages.forEach(sage => {
+    const card = document.getElementById('response' + capitalize(sage));
+    card.classList.remove('visible');
+    document.getElementById('body' + capitalize(sage)).innerHTML =
+      '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  });
+
+  // Stagger card appearance
+  sages.forEach((sage, i) => {
+    setTimeout(() => {
+      document.getElementById('response' + capitalize(sage)).classList.add('visible');
+    }, i * 150);
+  });
+
+  // Call API for each sage
+  const responses = {};
+  for (const sage of sages) {
+    try {
+      const response = await callSageAPI(sage, question);
+      responses[sage] = response;
+      document.getElementById('body' + capitalize(sage)).textContent = response;
+    } catch(e) {
+      const fallback = getFallbackResponse(sage, question);
+      responses[sage] = fallback;
+      document.getElementById('body' + capitalize(sage)).textContent = fallback;
+    }
+  }
+
+  state.currentResponses = responses;
+  state.questionCount++;
+  saveState();
+
+  // Show reflection form
+  setTimeout(() => {
+    document.getElementById('reflectionSection').classList.add('active');
+    document.getElementById('reflectionSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 800);
+}
+
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+// ===== API CALL =====
+async function callSageAPI(sage, question) {
+  const config = SAGE_PROMPTS[sage];
+
+  const res = await fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      sage: sage,
+      system: config.system,
+      question: question,
+      sessionId: state.sessionId
+    })
+  });
+
+  if (!res.ok) throw new Error('API error');
+  const data = await res.json();
+  return data.response;
+}
+
+// ===== FALLBACK (demo mode) =====
+function getFallbackResponse(sage, question) {
+  const q = question.length > 20 ? question.slice(0, 20) + '...' : question;
+  const fallbacks = {
+    desire: `あなたの問い——「${q}」。その奥にある欲望の形は何でしょう。あなたが本当に求めているのは、答えですか？ それとも、問うこと自体の快楽ですか？ 欲望には対象ではなく「形」がある。あなたの問いの形を、もう一度見つめてみてください。`,
+    circulation: `「${q}」——この問いは、どこから巡ってきたのでしょう。あなたの中で何かが循環し、この形になって外に出てきた。問いも答えも、直線ではなく円を描いています。答えを見つけたら、それがまた新しい問いの種になる。その循環を信じてください。`,
+    pluralism: `面白い。「${q}」という問い、逆の立場から聞いてみましょうか。あなたがこの問いの「答え」だと思っているもの——それは本当に唯一の正解ですか？ 別の文化、別の時代、別の立場から見たら、まったく違う景色が見えるかもしれません。`,
+    capital: `「${q}」——その考え、どこから来ました？ 何かを読んだ？ 誰かと話した？ それとも、朝シャワーを浴びているときに降ってきた？ 思想には遺伝子があります。あなたの問いのDNAを辿ると、きっと面白い系譜が見えてきますよ。`
+  };
+  return fallbacks[sage];
+}
+
+// ===== REFLECTION SUBMISSION =====
+async function submitReflection() {
+  const sageChoice = document.getElementById('reflectSage').value;
+  const surpriseChoice = document.getElementById('reflectSurprise').value;
+  const changeText = document.getElementById('reflectChange').value.trim();
+  const divergence = document.querySelector('input[name="divergence"]:checked');
+
+  // Collect data
+  const reflectionData = {
+    sessionId: state.sessionId,
+    questionNumber: state.questionCount,
+    question: state.currentQuestion,
+    responses: state.currentResponses,
+    reflection: {
+      mostResonant: sageChoice,
+      mostSurprising: surpriseChoice,
+      howChanged: changeText,
+      divergenceFromOriginal: divergence ? parseInt(divergence.value) : null
+    },
+    timestamp: new Date().toISOString()
+  };
+
+  // Try to send to worker for storage
+  try {
+    await fetch(WORKER_URL + '/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reflectionData)
+    });
+  } catch(e) {
+    // Silent fail — store locally as backup
+    try {
+      const logs = JSON.parse(localStorage.getItem('satori_logs') || '[]');
+      logs.push(reflectionData);
+      localStorage.setItem('satori_logs', JSON.stringify(logs));
+    } catch(e2) {}
+  }
+
+  // ★ Grant token from reflection submission
+  grantTokenFromReflection();
+
+  // Reset UI for next question
+  state.phase = 'question';
+  document.getElementById('responsesSection').classList.remove('active');
+  document.getElementById('reflectionSection').classList.remove('active');
+  document.getElementById('questionInput').value = '';
+
+  // Reset form fields
+  document.getElementById('reflectSage').value = '';
+  document.getElementById('reflectSurprise').value = '';
+  document.getElementById('reflectChange').value = '';
+  if (divergence) divergence.checked = false;
+
+  updateUI();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== START =====
+init();
+</script>
+</body>
+</html>
